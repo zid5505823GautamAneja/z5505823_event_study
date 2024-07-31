@@ -25,12 +25,15 @@
 
 
 # We've imported other needed scripts and defined aliases. Please keep using the same aliases for them in this project.
-import zid_project2_etl as etl
+import config as cfg
 import zid_project2_characteristics as cha
 import zid_project2_portfolio as pf
-
+import util
 import pandas as pd
-
+import os
+import numpy as np
+from datetime import datetime
+import toolkit_config as tcfg
 
 # -----------------------------------------------------------------------------------------------
 # Part 3: Follow the workflow in portfolio_main function
@@ -101,7 +104,16 @@ def portfolio_main(tickers, start, end, cha_name, ret_freq_use, q):
         See the docstring there for a description of it.
 
     """
+    # Step 1: Generate a dictionary containing daily and monthly returns
+    dict_ret = etl.aj_ret_dict(tickers=tickers, start=start, end=end)
 
+    # Step 2: Generate a DataFrame containing stocks' monthly return and characteristic info
+    df_cha = cha.cha_main(dict_ret, cha_name, ret_freq_use)
+
+    # Step 3: Construct a DataFrame with equal-weighted quantile and long-short portfolio return series
+    df_portfolios = pf.pf_main(df_cha, cha_name, q)
+
+    return dict_ret, df_cha, df_portfolios
     # --------------------------------------------------------------------------------------------------------
     # Part 4: Complete etl scaffold to generate returns dictionary and to make ad_ret_dic function works
     # --------------------------------------------------------------------------------------------------------
@@ -127,7 +139,8 @@ def portfolio_main(tickers, start, end, cha_name, ret_freq_use, q):
 # ----------------------------------------------------------------------------
 # Part 7: Complete the auxiliary functions
 # ----------------------------------------------------------------------------
-def get_avg(df: pd.DataFrame, year):
+
+def get_avg(df: pd.DataFrame, year: int) -> pd.Series:
     """ Returns the average value of all columns in the given df for a specified year.
 
     This function will calculate the column average for all columns
@@ -168,9 +181,20 @@ def get_avg(df: pd.DataFrame, year):
 
     """
     # <COMPLETE THIS PART>
+    # Ensure the DataFrame index is in datetime format
+    if not pd.api.types.is_datetime64_any_dtype(df.index):
+        raise ValueError("DataFrame index must be of datetime type.")
+
+    # Filter the DataFrame for the specified year
+    filtered_df = df[df.index.year == year]
+
+    # Compute the average of each column for the filtered DataFrame
+    avg_series = filtered_df.mean()
+
+    return avg_series
 
 
-def get_cumulative_ret(df):
+def get_cumulative_ret(df: pd.DataFrame) -> pd.Series:
     """ Returns cumulative returns for input DataFrame.
 
     Given a df with return series, this function will return the
@@ -198,7 +222,14 @@ def get_cumulative_ret(df):
 
     """
     # <COMPLETE THIS PART>
+    # Ensure the DataFrame index is in period format (monthly)
+    if not pd.api.types.is_period_dtype(df.index):
+        raise ValueError("DataFrame index must be of period type.")
 
+    # Calculate cumulative return for each portfolio
+    cumulative_returns = (1 + df).prod() - 1
+
+    return cumulative_returns
 
 # ----------------------------------------------------------------------------
 # Part 8: Answer questions
