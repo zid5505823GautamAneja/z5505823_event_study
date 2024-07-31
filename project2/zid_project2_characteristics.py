@@ -70,7 +70,6 @@ def vol_input_sanity_check(ret, cha_name, ret_freq_use: list):
     return project2.util.color_print('Sanity checks for inputs of characteristics script passed.')
 
 
-
 # ----------------------------------------------------------------------------
 # Part 5.4: Complete the vol_cal function
 # ----------------------------------------------------------------------------
@@ -291,7 +290,6 @@ def cha_main(ret, cha_name, ret_freq_use: list):
         The function assumes that `vol_input_sanity_check`, `vol_cal`, and `merge_tables` are defined elsewhere
         in the module with appropriate logic to handle the inputs and outputs as described.
     """
-    # <COMPLETE THIS PART>
     # <COMPLETE THIS PART>
     # Perform sanity check on inputs
     vol_input_sanity_check(ret, cha_name, ret_freq_use)
