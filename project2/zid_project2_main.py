@@ -36,7 +36,6 @@ from datetime import datetime
 import toolkit_config as tcfg
 import zid_project2_etl as etl
 
-
 # -----------------------------------------------------------------------------------------------
 # Part 3: Follow the workflow in portfolio_main function
 #         to understand how this project construct total volatility long-short portfolio
@@ -289,7 +288,7 @@ Q4_ANSWER = f"{dict_ret['Monthly'].loc['2019'].mean(axis=1).max():.4f}"
 # Q5: What is the average monthly total volatility for stock 'TSLA' in the year 2010?
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
 #     to do the calculation.
-Q5_ANSWER = f"{df_cha[f'TSLA_vol'].loc['2010'].mean():.4f}"
+Q5_ANSWER = f"{df_cha['TSLA_volatility'].loc['2010'].mean():.4f}"
 
 # Q6: What is the ratio of the average monthly total volatility for stock 'V'
 #     in the year 2008 to that in the year 2018? Keep 1 decimal places.
