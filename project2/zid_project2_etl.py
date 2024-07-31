@@ -1,6 +1,4 @@
-""" zid_project2_etl.py
-
-"""
+""" zid_project2_etl.py """
 
 # ----------------------------------------------------------------------------
 # Part 4.1: import needed modules
@@ -9,7 +7,6 @@
 # Note: please keep the aliases consistent throughout the project.
 #       For details, review the import statements in zid_project2_main.py
 
-# <COMPLETE THIS PART>
 import config as cfg
 import zid_project2_characteristics as cha
 import zid_project2_portfolio as pf
@@ -118,8 +115,10 @@ def read_prc_csv(tic, start, end, prc_col='Adj Close'):
     df = df.sort_index()
 
     # Check if the start and end dates exist in the index
-    if start not in df.index or end not in df.index:
-        raise KeyError("Start or end date not in the DataFrame index.")
+    if pd.to_datetime(start) not in df.index:
+        start = df.index[df.index.searchsorted(pd.to_datetime(start))]
+    if pd.to_datetime(end) not in df.index:
+        end = df.index[df.index.searchsorted(pd.to_datetime(end)) - 1]
 
     # Slice the DataFrame
     df = df.loc[start:end]
@@ -134,8 +133,6 @@ def read_prc_csv(tic, start, end, prc_col='Adj Close'):
     ser.name = tic
 
     return ser
-
-
 
 # ----------------------------------------------------------------------------
 # Part 4.3: Complete the daily_return_cal function
@@ -228,8 +225,6 @@ def daily_return_cal(prc, prc_df=None):
     daily_return = prc_df.pct_change().dropna()
     daily_return.name = prc.name
     return daily_return
-
-
 
 # ----------------------------------------------------------------------------
 # Part 4.4: Complete the monthly_return_cal function
@@ -332,7 +327,7 @@ def monthly_return_cal(prc):
 
     """
     # Resample to monthly and use the last available price for each month
-    monthly_prices = prc.resample('M').last()
+    monthly_prices = prc.resample('ME').last()
 
     # Calculate monthly returns
     monthly_returns = monthly_prices.pct_change().dropna()
@@ -341,15 +336,15 @@ def monthly_return_cal(prc):
     monthly_returns.index = monthly_returns.index.to_period('M')
 
     # Filter out months with less than 18 price entries
-    valid_months = prc.resample('M').count() >= 18
-    monthly_returns = monthly_returns[valid_months]
+    valid_months = prc.resample('ME').count() >= 18
+    valid_months = valid_months[valid_months].index.to_period('M')
+    monthly_returns = monthly_returns[monthly_returns.index.isin(valid_months)]
 
     # Rename the index and the series
     monthly_returns.index.name = 'Year_Month'
     monthly_returns.name = prc.name
 
     return monthly_returns
-
 
 # ----------------------------------------------------------------------------
 # Part 4.5: Complete the aj_ret_dict function
@@ -490,13 +485,9 @@ def aj_ret_dict(tickers, start, end):
 
     return ret_dict
 
-
-
-
 # ----------------------------------------------------------------------------
 #   Test functions
 # ----------------------------------------------------------------------------
-
 
 def _test_read_prc_csv():
     """ Test function for `read_prc_csv`
@@ -504,7 +495,6 @@ def _test_read_prc_csv():
     tic = 'AAPL'
     ser = read_prc_csv(tic, '2010-01-04', '2010-12-31')
     util.test_print(ser)
-
 
 def _test_daily_return_cal(made_up_data=True, ser_prc=None):
     """ Test function for `daily_return_cal`
@@ -526,7 +516,6 @@ def _test_daily_return_cal(made_up_data=True, ser_prc=None):
     res_daily = daily_return_cal(prc)
     msg = "This means `res_daily = daily_return_cal(prc)`, print out res_daily:"
     util.test_print(res_daily, msg)
-
 
 def _test_monthly_return_cal(made_up_data=True, ser_prc=None):
     """ Test function for `monthly_return_cal`
@@ -552,7 +541,6 @@ def _test_monthly_return_cal(made_up_data=True, ser_prc=None):
     msg = "This means `res_monthly = monthly_return_cal(prc)`, print out res_monthly:"
     util.test_print(res_monthly, msg)
 
-
 def _test_aj_ret_dict(tickers, start, end):
     """ Test function for `aj_ret_dict`
     """
@@ -564,10 +552,9 @@ def _test_aj_ret_dict(tickers, start, end):
 
     return dict_ret
 
-
 if __name__ == "__main__":
     pass
-    #test read_prc_csv function
+    # test read_prc_csv function
     _test_read_prc_csv()
 
     # use made-up series to test daily_return_cal function
@@ -583,4 +570,3 @@ if __name__ == "__main__":
     _test_monthly_return_cal(made_up_data=False, ser_prc=ser_price)
     # _test aj_ret_dict function
     _test_aj_ret_dict(['AAPL', 'TSLA'], start='2010-06-25', end='2010-08-05')
-
