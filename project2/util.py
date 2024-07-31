@@ -1,5 +1,5 @@
 import os
-from project2 import config as cfg
+import config as cfg
 import pandas as pd
 
 

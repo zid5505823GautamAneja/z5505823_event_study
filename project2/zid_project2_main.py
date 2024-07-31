@@ -280,7 +280,7 @@ Q2_ANSWER = f"{dict_ret['Daily'].loc['2008'].mean(axis=1).min():.4f}"
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q3_ANSWER = dict_ret['Monthly'].loc['2019'].mean(axis=1).idxmax()
-
+#
 # Q4: What is the average monthly return of the stock in question 3 for the year 2019.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
@@ -289,20 +289,21 @@ Q4_ANSWER = f"{dict_ret['Monthly'].loc['2019'].mean(axis=1).max():.4f}"
 # Q5: What is the average monthly total volatility for stock 'TSLA' in the year 2010?
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
 #     to do the calculation.
-Q5_ANSWER = f"{df_cha[f'TSLA_vol'].loc['2010'].mean():.4f}"
-
+Q5_ANSWER = f"{df_cha[f'tsla_vol'].loc['2010'].mean():.4f}"
+#
 # Q6: What is the ratio of the average monthly total volatility for stock 'V'
 #     in the year 2008 to that in the year 2018? Keep 1 decimal places.
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
 #     to do the calculation.
-Q6_ANSWER = f"{df_cha['V_vol'].loc['2008'].mean() / df_cha['V_vol'].loc['2018'].mean():.1f}"
+
+Q6_ANSWER = f"{df_cha['v_vol'].loc['2008'].mean() / df_cha['v_vol'].loc['2018'].mean():.1f}"
 
 # Q7: How many effective year-month for stock 'TSLA' in year 2010. An effective year-month
 #     row means both monthly return in 'tsla' column and total volatility in 'tsla_vol'
 #     are not null.
 #     Use the output dataframe, Vol_Ret_mrg_df, to do the calculation.
 #     Answer should be an integer
-Q7_ANSWER = f"{df_cha.loc['2010', ['TSLA', 'TSLA_vol']].dropna().shape[0]}"
+Q7_ANSWER = f"{df_cha.loc['2010', ['tsla', 'tsla_vol']].dropna().shape[0]}"
 
 # Q8: How many rows and columns in the EW_LS_pf_df data frame?
 #     The answer string should only include two integers separating by a comma.

@@ -10,9 +10,9 @@
 #       For details, review the import statements in zid_project2_main.py
 
 # <COMPLETE THIS PART>
-import project2.config as cfg
-import project2.util
-import project2.zid_project2_etl as etl
+import config as cfg
+import util
+import zid_project2_etl as etl
 import pandas as pd
 import numpy as np
 
@@ -69,7 +69,7 @@ def vol_input_sanity_check(ret, cha_name, ret_freq_use: list):
     if not isinstance(ret_freq_use, list) or not set(ret_freq_use).issubset(keys):
         return sys.exit("`ret_freq_use` must be a list containing 'Daily', 'Monthly', both or blank.")
 
-    return project2.util.color_print('Sanity checks for inputs of characteristics script passed.')
+    return util.color_print('Sanity checks for inputs of characteristics script passed.')
 
 
 # ----------------------------------------------------------------------------
@@ -301,8 +301,8 @@ def cha_main(ret, cha_name, ret_freq_use: list):
 
     # Merge the characteristics with the monthly return table
     df = merge_tables(ret, df_cha, cha_name)
-
     return df
+
 
 
 def _test_ret_dict_gen():
@@ -386,7 +386,7 @@ def _test_vol_cal(ret, cha_name,  ret_freq_use):
 
     df_cha = vol_cal(ret, cha_name, ret_freq_use)
     msg = "This means `df_cha = vol_cal(ret, cha_name, ret_freq_use)`, print out df_cha:"
-    project2.util.test_print(df_cha, msg)
+    util.test_print(df_cha, msg)
 
 
 def _test_merge_tables(ret, cha_name, ret_freq_use):
@@ -421,7 +421,7 @@ def _test_merge_tables(ret, cha_name, ret_freq_use):
         "This means `df_m = merge_tables(ret, df_cha, cha_name)",
         f"The value of `df_m` is \n{df_m}",
     ]
-    project2.util.test_print('\n'.join(to_print))
+    util.test_print('\n'.join(to_print))
 
 
 def _test_cha_main(ret, cha_name, ret_freq_use):
@@ -430,7 +430,7 @@ def _test_cha_main(ret, cha_name, ret_freq_use):
     df_cha_f = cha_main(ret, cha_name, ret_freq_use)
     msg = ("This means `df_cha_f = cha_main(ret, cha_name, ret_freq_use)`,\
             \nprint out df_cha_f:")
-    project2.util.test_print(df_cha_f, msg)
+    util.test_print(df_cha_f, msg)
 
     return df_cha_f
 
@@ -451,4 +451,6 @@ if __name__ == "__main__":
     _test_vol_cal(ret_dict, 'vol', ['Daily',])
     _test_merge_tables(ret_dict, 'vol', ['Daily',])
     _test_cha_main(ret_dict, 'vol', ['Daily',])
+
+
 
