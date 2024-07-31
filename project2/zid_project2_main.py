@@ -295,7 +295,7 @@ Q5_ANSWER = f"{df_cha[f'tsla_vol'].loc['2010'].mean():.4f}"
 #     in the year 2008 to that in the year 2018? Keep 1 decimal places.
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
 #     to do the calculation.
-
+print(df_cha.columns)
 Q6_ANSWER = f"{df_cha['v_vol'].loc['2008'].mean() / df_cha['v_vol'].loc['2018'].mean():.1f}"
 
 # Q7: How many effective year-month for stock 'TSLA' in year 2010. An effective year-month
