@@ -9,10 +9,12 @@
 # Note: please keep the aliases consistent throughout the project.
 #       For details, review the import statements in zid_project2_main.py
 
-import numpy as np
 # <COMPLETE THIS PART>
+import project2.config as cfg
+import project2.util
+import project2.zid_project2_etl as etl
 import pandas as pd
-
+import numpy as np
 
 # ----------------------------------------------------------------------------------------
 # Part 5.3: read the vol_input_sanity_check function
