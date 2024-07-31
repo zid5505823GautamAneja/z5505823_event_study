@@ -10,8 +10,15 @@
 #       For details, review the import statements in zid_project2_main.py
 
 # <COMPLETE THIS PART>
-
-
+import config as cfg
+import zid_project2_characteristics as cha
+import zid_project2_portfolio as pf
+import util
+import pandas as pd
+import os
+import numpy as np
+from datetime import datetime
+import toolkit_config as tcfg
 
 # ----------------------------------------------------------------------------
 # Part 4.2: Complete the read_prc_csv function
@@ -98,13 +105,42 @@ def read_prc_csv(tic, start, end, prc_col='Adj Close'):
 
     """
 
-    # <COMPLETE THIS PART>
+    # Ensure the ticker is lowercase for filename
+    tic = tic.lower()
+
+    # Construct the full file path
+    file_path = os.path.join(cfg.DATADIR, f'{tic}_prc.csv')
+
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(file_path, parse_dates=['Date'], index_col='Date')
+
+    # Ensure the DatetimeIndex is sorted
+    df = df.sort_index()
+
+    # Check if the start and end dates exist in the index
+    if start not in df.index or end not in df.index:
+        raise KeyError("Start or end date not in the DataFrame index.")
+
+    # Slice the DataFrame
+    df = df.loc[start:end]
+
+    # Drop any rows with null values
+    df = df.dropna(subset=[prc_col])
+
+    # Extract the adjusted close prices as a Series
+    ser = df[prc_col]
+
+    # Rename the series to the ticker in lowercase
+    ser.name = tic
+
+    return ser
+
 
 
 # ----------------------------------------------------------------------------
 # Part 4.3: Complete the daily_return_cal function
 # ----------------------------------------------------------------------------
-def daily_return_cal(prc):
+def daily_return_cal(prc, prc_df=None):
     """ Create a pandas series containing daily returns for an individual stock,
     given a Pandas series with daily prices and datetime-formatted index.
 
@@ -186,7 +222,13 @@ def daily_return_cal(prc):
      - Ensure that the returns do not contain any entries with null values.
 
     """
-    # <COMPLETE THIS PART>
+    if prc_df is None:
+        prc_df = prc
+
+    daily_return = prc_df.pct_change().dropna()
+    daily_return.name = prc.name
+    return daily_return
+
 
 
 # ----------------------------------------------------------------------------
@@ -197,7 +239,7 @@ def monthly_return_cal(prc):
     given a Pandas series with daily prices and datetime-formatted index.
 
     This function uses the `read_prc_csv` function in this module to read the
-    price information .
+    price information.
 
     Parameters
     ----------
@@ -289,7 +331,24 @@ def monthly_return_cal(prc):
      - Ensure that the returns do not contain any entries with null values.
 
     """
-    # <COMPLETE THIS PART>
+    # Resample to monthly and use the last available price for each month
+    monthly_prices = prc.resample('M').last()
+
+    # Calculate monthly returns
+    monthly_returns = monthly_prices.pct_change().dropna()
+
+    # Convert the index to PeriodIndex
+    monthly_returns.index = monthly_returns.index.to_period('M')
+
+    # Filter out months with less than 18 price entries
+    valid_months = prc.resample('M').count() >= 18
+    monthly_returns = monthly_returns[valid_months]
+
+    # Rename the index and the series
+    monthly_returns.index.name = 'Year_Month'
+    monthly_returns.name = prc.name
+
+    return monthly_returns
 
 
 # ----------------------------------------------------------------------------
@@ -402,7 +461,36 @@ def aj_ret_dict(tickers, start, end):
         memory usage: 24.0 bytes
         ----------------------------------------
     """
-    # <COMPLETE THIS PART>
+    daily_returns = []
+    monthly_returns = []
+
+    for tic in tickers:
+        prc_df = read_prc_csv(tic, start=start, end=end)
+        daily_ret_df = daily_return_cal(prc_df)
+        monthly_ret_df = monthly_return_cal(prc_df)
+
+        daily_returns.append(daily_ret_df)
+        monthly_returns.append(monthly_ret_df)
+
+    # Combine all daily returns into a single DataFrame
+    daily_return_df = pd.concat(daily_returns, axis=1)
+    daily_return_df.columns = [tic.lower() for tic in tickers]
+    daily_return_df.index.name = 'Date'
+
+    # Combine all monthly returns into a single DataFrame
+    monthly_return_df = pd.concat(monthly_returns, axis=1)
+    monthly_return_df.columns = [tic.lower() for tic in tickers]
+    monthly_return_df.index.name = 'Year_Month'
+
+    # Create the result dictionary
+    ret_dict = {
+        "Daily": daily_return_df,
+        "Monthly": monthly_return_df
+    }
+
+    return ret_dict
+
+
 
 
 # ----------------------------------------------------------------------------
@@ -424,8 +512,8 @@ def _test_daily_return_cal(made_up_data=True, ser_prc=None):
     if made_up_data:
         # Made-up data
         prc = pd.Series({
-             '2019-01-29': 1.0, '2019-01-30': 2.0, '2019-01-31': 1.5, '2019-02-01': 1.4,
-             '2019-02-04': 1.6, '2019-02-05': 1.2, '2019-02-06': 1.4, '2019-02-07': 1.9, '2019-02-08': 1.7, })
+            '2019-01-29': 1.0, '2019-01-30': 2.0, '2019-01-31': 1.5, '2019-02-01': 1.4,
+            '2019-02-04': 1.6, '2019-02-05': 1.2, '2019-02-06': 1.4, '2019-02-07': 1.9, '2019-02-08': 1.7, })
         prc.name = 'comp_tic'
         prc.index = pd.to_datetime(prc.index)
         prc.index.name = 'Date'
@@ -446,11 +534,11 @@ def _test_monthly_return_cal(made_up_data=True, ser_prc=None):
     if made_up_data:
         # Made-up data
         prc = pd.Series({
-              '2019-01-28': 2.0, '2019-01-29': 2.0, '2019-01-30': 1.0, '2019-01-31': 1.5, '2019-02-01': 1.4,
-              '2019-02-04': 1.6, '2019-02-05': 1.2, '2019-02-06': 1.4, '2019-02-07': 1.9, '2019-02-08': 1.7,
-              '2019-02-11': 1.7, '2019-02-12': 1.5, '2019-02-13': 1.7, '2019-02-14': 1.2, '2019-02-15': 1.4,
-              '2019-02-18': 0.9, '2019-02-19': 1.4, '2019-02-20': 1.7, '2019-02-21': 1.0, '2019-02-22': 1.2,
-              '2019-02-25': 0.8, '2019-02-26': 1.7, '2019-02-27': 1.4, '2019-02-28': 1.0, '2019-03-01': 1.3, })
+            '2019-01-28': 2.0, '2019-01-29': 2.0, '2019-01-30': 1.0, '2019-01-31': 1.5, '2019-02-01': 1.4,
+            '2019-02-04': 1.6, '2019-02-05': 1.2, '2019-02-06': 1.4, '2019-02-07': 1.9, '2019-02-08': 1.7,
+            '2019-02-11': 1.7, '2019-02-12': 1.5, '2019-02-13': 1.7, '2019-02-14': 1.2, '2019-02-15': 1.4,
+            '2019-02-18': 0.9, '2019-02-19': 1.4, '2019-02-20': 1.7, '2019-02-21': 1.0, '2019-02-22': 1.2,
+            '2019-02-25': 0.8, '2019-02-26': 1.7, '2019-02-27': 1.4, '2019-02-28': 1.0, '2019-03-01': 1.3, })
         prc.name = 'comp_tic'
         prc.index = pd.to_datetime(prc.index)
         prc.index.name = 'Date'
@@ -479,20 +567,20 @@ def _test_aj_ret_dict(tickers, start, end):
 
 if __name__ == "__main__":
     pass
-    # #test read_prc_csv function
-    # _test_read_prc_csv()
+    #test read_prc_csv function
+    _test_read_prc_csv()
 
-    # # use made-up series to test daily_return_cal function
-    # _test_daily_return_cal()
-    # # use AAPL prc series to test daily_return_cal function
-    # ser_price = read_prc_csv(tic='AAPL', start='2020-09-03', end='2020-09-09')
-    # _test_daily_return_cal(made_up_data=False, ser_prc=ser_price)
-    #
-    # # use made-up series to test daily_return_cal function
-    # _test_monthly_return_cal()
-    # # use AAPL prc series to test daily_return_cal function
-    # ser_price = read_prc_csv(tic='AAPL', start='2020-08-31', end='2021-01-10')
-    # _test_monthly_return_cal(made_up_data=False, ser_prc=ser_price)
-    # # test aj_ret_dict function
-    # _test_aj_ret_dict(['AAPL', 'TSLA'], start='2010-06-25', end='2010-08-05')
+    # use made-up series to test daily_return_cal function
+    _test_daily_return_cal()
+    # use AAPL prc series to test daily_return_cal function
+    ser_price = read_prc_csv(tic='AAPL', start='2020-09-03', end='2020-09-09')
+    _test_daily_return_cal(made_up_data=False, ser_prc=ser_price)
+
+    # use made-up series to test daily_return_cal function
+    _test_monthly_return_cal()
+    # use AAPL prc series to test daily_return_cal function
+    ser_price = read_prc_csv(tic='AAPL', start='2020-08-31', end='2021-01-10')
+    _test_monthly_return_cal(made_up_data=False, ser_prc=ser_price)
+    # _test aj_ret_dict function
+    _test_aj_ret_dict(['AAPL', 'TSLA'], start='2010-06-25', end='2010-08-05')
 

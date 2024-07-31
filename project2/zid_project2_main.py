@@ -25,9 +25,9 @@
 
 
 # We've imported other needed scripts and defined aliases. Please keep using the same aliases for them in this project.
-from project2 import zid_project2_etl as etl
-from project2 import zid_project2_characteristics as cha
-from project2 import zid_project2_portfolio as pf
+import zid_project2_etl as etl
+import zid_project2_characteristics as cha
+import zid_project2_portfolio as pf
 
 import pandas as pd
 
