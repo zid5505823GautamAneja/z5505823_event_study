@@ -73,7 +73,7 @@ def vol_input_sanity_check(ret, cha_name, ret_freq_use: list):
 
 
 # ----------------------------------------------------------------------------
-# Part 5.4: Complete the vol_cal function
+# Part 5.4: Complete the vol_cal functions
 # ----------------------------------------------------------------------------
 def vol_cal(ret, cha_name, ret_freq_use: list):
     """
