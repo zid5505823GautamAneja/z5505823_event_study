@@ -337,7 +337,6 @@ Q8_ANSWER = f"{df_portfolios.shape[0]},{df_portfolios.shape[1]}"
 #     Use the output dataframe, EW_LS_pf_d, and auxiliary function in this script
 #     to do the calculation.
 Q9_ANSWER = f"{df_portfolios.loc['2019'].mean(axis=0).min():.4f}"
-
 # Q10: What is the cumulative portfolio return of the total volatility long-short portfolio
 #      over the whole sample period?
 #      Use the output dataframe, EW_LS_pf_df, and auxiliary function in this script
@@ -354,7 +353,6 @@ print(f"Q7_ANSWER: {Q7_ANSWER} is for Q7 part 8")
 print(f"Q8_ANSWER: {Q8_ANSWER} is for Q8 part 8")
 print(f"Q9_ANSWER: {Q9_ANSWER} is for Q9 part 8")
 print(f"Q10_ANSWER: {Q10_ANSWER} is for Q10 part 8")
-
 
 # ----------------------------------------------------------------------------
 # Part 9: Add t_stat function
@@ -389,11 +387,28 @@ def t_stat(df):
     ls_t = ls_bar / (ls_std / np.sqrt(n_obs))
     return pd.DataFrame({'ls_bar': [ls_bar], 'ls_t': [ls_t], 'n_obs': [n_obs]})
 
+# Assuming df_portfolios is already defined and contains the 'ls' column
+# If df_portfolios is not defined, create a sample DataFrame (replace this with actual data)
+# data = {'ls': np.random.randn(100)}  # Example data, replace with actual data
+# df_portfolios = pd.DataFrame(data)
+
+# Calculate the t-statistics
 t_stat_result = t_stat(df_portfolios)
+
+# Print the resulting DataFrame
+print("T-Statistic Results DataFrame:")
+print(t_stat_result)
+
+# Format the values for individual printing if needed
 ls_bar = f"{t_stat_result['ls_bar'].iloc[0]:.4f}"
 ls_t = f"{t_stat_result['ls_t'].iloc[0]:.4f}"
 n_obs = f"{t_stat_result['n_obs'].iloc[0]}"
 
+# Print the formatted values
+print(f"\nFormatted Outputs:")
+print(f"ls_bar: {ls_bar}")
+print(f"ls_t: {ls_t}")
+print(f"n_obs: {n_obs}")
 
 # ----------------------------------------------------------------------------
 # Part 10: share your team's project 2 git log
