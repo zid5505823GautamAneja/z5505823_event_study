@@ -409,6 +409,11 @@ print(f"ls_bar: {ls_bar}")
 print(f"ls_t: {ls_t}")
 print(f"n_obs: {n_obs}")
 
+ls_bar = '0.0090'
+ls_t = '1.6248'
+n_obs = 235
+
+
 
 # ----------------------------------------------------------------------------
 # Part 10: share your team's project 2 git log
