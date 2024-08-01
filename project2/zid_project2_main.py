@@ -379,17 +379,16 @@ print(f"Q10_ANSWER: {Q10_ANSWER} is for Q10 part 8")
 def t_stat(df):
     """
     Calculate the t-statistics for the long-short portfolio
-    :param df: dataframe containing 'ls' column
-    :return: dataframe with t-statistics
+    :param df: DataFrame containing 'ls' column
+    :return: DataFrame with t-statistics
     """
     ls_mean = df['ls'].mean()
     ls_standard_deviation = df['ls'].std()
     number_obs = df['ls'].count()
     ls_tstat = ls_mean / (ls_standard_deviation / np.sqrt(number_obs))
-    return pd.DataFrame({'ls_bar': [ls_mean], 'ls_t': [ls_tstat], 'n_obs': [number_obs]})
+    return pd.DataFrame({'ls_bar': [round(ls_mean, 4)], 'ls_t': [round(ls_tstat, 4)], 'n_obs': [number_obs]}, index=['ls'])
 
-
-# df_portfolios is already defined and contains the 'ls' column
+# Assuming df_portfolios is already defined and contains the 'ls' column
 # df_portfolios = pd.DataFrame(data)
 
 # Calculate the t-statistics
@@ -399,20 +398,16 @@ t_stat_result = t_stat(df_portfolios)
 print("T-Statistic Results DataFrame:")
 print(t_stat_result)
 
-# Format the values for individual printing if needed
+# Extracting the values for replacement
 ls_bar = f"{t_stat_result['ls_bar'].iloc[0]:.4f}"
 ls_t = f"{t_stat_result['ls_t'].iloc[0]:.4f}"
-n_obs = f"{t_stat_result['n_obs'].iloc[0]}"
+n_obs = t_stat_result['n_obs'].iloc[0]
 
 # Print the formatted values
-print(f"\nFormatted Outputs:")
+print("\nFormatted Outputs:")
 print(f"ls_bar: {ls_bar}")
 print(f"ls_t: {ls_t}")
 print(f"n_obs: {n_obs}")
-
-ls_bar = '0.0089'
-ls_t = '1.6248'
-n_obs = 235
 
 
 # ----------------------------------------------------------------------------
