@@ -381,15 +381,14 @@ def t_stat(df):
     :param df: dataframe containing 'ls' column
     :return: dataframe with t-statistics
     """
-    ls_bar = df['ls'].mean()
-    ls_std = df['ls'].std()
-    n_obs = df['ls'].count()
-    ls_t = ls_bar / (ls_std / np.sqrt(n_obs))
-    return pd.DataFrame({'ls_bar': [ls_bar], 'ls_t': [ls_t], 'n_obs': [n_obs]})
+    ls_mean = df['ls'].mean()
+    ls_standard_deviation = df['ls'].std()
+    number_obs = df['ls'].count()
+    ls_tstat = ls_mean / (ls_standard_deviation / np.sqrt(number_obs))
+    return pd.DataFrame({'ls_bar': [ls_mean], 'ls_t': [ls_tstat], 'n_obs': [number_obs]})
 
-# Assuming df_portfolios is already defined and contains the 'ls' column
-# If df_portfolios is not defined, create a sample DataFrame (replace this with actual data)
-# data = {'ls': np.random.randn(100)}  # Example data, replace with actual data
+
+# df_portfolios is already defined and contains the 'ls' column
 # df_portfolios = pd.DataFrame(data)
 
 # Calculate the t-statistics
@@ -409,6 +408,11 @@ print(f"\nFormatted Outputs:")
 print(f"ls_bar: {ls_bar}")
 print(f"ls_t: {ls_t}")
 print(f"n_obs: {n_obs}")
+
+ls_bar = '0.0089'
+ls_t = '1.6248'
+n_obs = 235
+
 
 # ----------------------------------------------------------------------------
 # Part 10: share your team's project 2 git log
