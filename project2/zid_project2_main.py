@@ -178,7 +178,18 @@ def get_avg(df: pd.DataFrame, year):
         dtype: float64
 
     """
-    return df[df.index.year == year].mean()
+    # To make sure the DataFrame index is a DatetimeIndex or PeriodIndex
+    if not isinstance(df.index, (pd.DatetimeIndex, pd.PeriodIndex)):
+        raise ValueError("The DataFrame index must be a DatetimeIndex or PeriodIndex.")
+
+    # Filter the DataFrame for the specified year
+    df_year = df[df.index.year == year]
+
+    # Calculate the average of each column, excluding missing values
+    avg_series = df_year.mean()
+
+    return avg_series
+
 
 def get_cumulative_ret(df):
     """ Returns cumulative returns for input DataFrame.
@@ -207,7 +218,14 @@ def get_cumulative_ret(df):
         where r1, ..., rN represents monthly returns
 
     """
-    return (1 + df).cumprod() - 1
+    # Calculate the cumulative product of returns for each portfolio
+    cumulative_product = (1 + df).cumprod()
+
+    # The final cumulative return for each portfolio
+    cumulative_return = cumulative_product.iloc[-1] - 1
+
+    return cumulative_return
+
 
 # ----------------------------------------------------------------------------
 # Part 8: Answer questions
