@@ -35,6 +35,7 @@ import numpy as np
 from datetime import datetime
 import toolkit_config as tcfg
 import zid_project2_etl as etl
+import pickle
 
 
 # -----------------------------------------------------------------------------------------------
@@ -776,7 +777,7 @@ Q6_ANSWER = f"{df_cha['v_vol'].loc['2008'].mean() / df_cha['v_vol'].loc['2018'].
 #     Use the output dataframe, Vol_Ret_mrg_df, to do the calculation.
 #     Answer should be an integer
 Q7_ANSWER = f"{df_cha.loc['2010', ['tsla', 'tsla_vol']].dropna().shape[0]}"
-print(df_cha.columns)
+
 
 # Q8: How many rows and columns in the EW_LS_pf_df data frame?
 #     The answer string should only include two integers separating by a comma.
@@ -914,6 +915,7 @@ def _test_get_avg():
         f"The value of `res` is {res}",
     ]
     util.test_print('\n'.join(to_print))
+
 
 
 def _test_get_cumulative_ret():
