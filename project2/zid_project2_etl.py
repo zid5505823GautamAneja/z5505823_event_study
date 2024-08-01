@@ -102,34 +102,20 @@ def read_prc_csv(tic, start, end, prc_col='Adj Close'):
 
     """
 
-    # Ensure the ticker is lowercase for filename
+
     tic = tic.lower()
-
-    # Construct the full file path
     file_path = os.path.join(cfg.DATADIR, f'{tic}_prc.csv')
-
-    # Read the CSV file into a DataFrame
     df = pd.read_csv(file_path, parse_dates=['Date'], index_col='Date')
-
-    # Ensure the DatetimeIndex is sorted
     df = df.sort_index()
-
-    # Check if the start and end dates exist in the index
     if pd.to_datetime(start) not in df.index:
         start = df.index[df.index.searchsorted(pd.to_datetime(start))]
     if pd.to_datetime(end) not in df.index:
         end = df.index[df.index.searchsorted(pd.to_datetime(end)) - 1]
 
-    # Slice the DataFrame
+
     df = df.loc[start:end]
-
-    # Drop any rows with null values
     df = df.dropna(subset=[prc_col])
-
-    # Extract the adjusted close prices as a Series
     ser = df[prc_col]
-
-    # Rename the series to the ticker in lowercase
     ser.name = tic
 
     return ser

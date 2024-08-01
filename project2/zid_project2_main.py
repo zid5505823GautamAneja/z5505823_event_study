@@ -305,7 +305,7 @@ Q6_ANSWER = f"{df_cha['v_vol'].loc['2008'].mean() / df_cha['v_vol'].loc['2018'].
 #     Use the output dataframe, Vol_Ret_mrg_df, to do the calculation.
 #     Answer should be an integer
 Q7_ANSWER = f"{df_cha.loc['2010', ['tsla', 'tsla_vol']].dropna().shape[0]}"
-print(df_cha.columns)
+
 
 # Q8: How many rows and columns in the EW_LS_pf_df data frame?
 #     The answer string should only include two integers separating by a comma.
@@ -740,24 +740,25 @@ df_portfolios = pd.read_pickle('EW_LS_pf_df.pkl')
 #     ticker for this stock.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
-Q1_ANSWER = dict_ret['Daily'].loc['2008'].mean(axis=1).idxmin()
+Q1_ANSWER = dict_ret['Daily'].loc['2008'].mean(axis=0).idxmin()
+# Assuming dict_ret['Daily'] is a DataFrame containing daily returns indexed by date
 
 # Q2: What is the daily average return of the stock in question 1 for the year 2008.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
-Q2_ANSWER = f"{dict_ret['Daily'].loc['2008'].mean(axis=1).min():.4f}"
+Q2_ANSWER = f"{dict_ret['Daily'].loc['2008'].mean(axis=0).min():.4f}"
 
 # Q3: Which stock in your sample has the highest average monthly return for the
 #     year 2019 (ignoring missing values)? Your answer should include the
 #     ticker for this stock.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
-Q3_ANSWER = dict_ret['Monthly'].loc['2019'].mean(axis=1).idxmax()
-#
+Q3_ANSWER = dict_ret['Monthly'].loc['2019'].mean(axis=0).idxmax()
+
 # Q4: What is the average monthly return of the stock in question 3 for the year 2019.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
-Q4_ANSWER = f"{dict_ret['Monthly'].loc['2019'].mean(axis=1).max():.4f}"
+Q4_ANSWER = f"{dict_ret['Monthly'].loc['2019'].mean(axis=0).max():.4f}"
 
 # Q5: What is the average monthly total volatility for stock 'TSLA' in the year 2010?
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
@@ -796,6 +797,17 @@ Q9_ANSWER = f"{df_portfolios.loc['2019'].mean(axis=0).min():.4f}"
 #      Use the output dataframe, EW_LS_pf_df, and auxiliary function in this script
 #     to do the calculation.
 Q10_ANSWER = f"{get_cumulative_ret(df_portfolios)['ls'].iloc[-1]:.4f}"
+
+print(f"Q1_ANSWER: {Q1_ANSWER} is for Q1 part 8")
+print(f"Q2_ANSWER: {Q2_ANSWER} is for Q2 part 8")
+print(f"Q3_ANSWER: {Q3_ANSWER} is for Q3 part 8")
+print(f"Q4_ANSWER: {Q4_ANSWER} is for Q4 part 8")
+print(f"Q5_ANSWER: {Q5_ANSWER} is for Q5 part 8")
+print(f"Q6_ANSWER: {Q6_ANSWER} is for Q6 part 8")
+print(f"Q7_ANSWER: {Q7_ANSWER} is for Q7 part 8")
+print(f"Q8_ANSWER: {Q8_ANSWER} is for Q8 part 8")
+print(f"Q9_ANSWER: {Q9_ANSWER} is for Q9 part 8")
+print(f"Q10_ANSWER: {Q10_ANSWER} is for Q10 part 8")
 
 
 # ----------------------------------------------------------------------------
