@@ -178,7 +178,7 @@ def get_avg(df: pd.DataFrame, year):
         dtype: float64
 
     """
-    # To make sure the DataFrame index is a DatetimeIndex or PeriodIndex
+    # DataFrame index is a DatetimeIndex or PeriodIndex
     if not isinstance(df.index, (pd.DatetimeIndex, pd.PeriodIndex)):
         raise ValueError("The DataFrame index must be a DatetimeIndex or PeriodIndex.")
 
