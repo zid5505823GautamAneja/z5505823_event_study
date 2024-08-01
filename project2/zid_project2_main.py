@@ -221,7 +221,7 @@ def get_cumulative_ret(df):
     # Calculate the cumulative product of returns for each portfolio
     cumulative_product = (1 + df).cumprod()
 
-    # The final cumulative return for all portfolio
+    # The final cumulative return for each portfolio
     cumulative_return = cumulative_product.iloc[-1] - 1
 
     return cumulative_return
@@ -341,7 +341,8 @@ Q9_ANSWER = f"{df_portfolios.loc['2019'].mean(axis=0).min():.4f}"
 #      over the whole sample period?
 #      Use the output dataframe, EW_LS_pf_df, and auxiliary function in this script
 #     to do the calculation.
-Q10_ANSWER = f"{get_cumulative_ret(df_portfolios)['ls'].iloc[-1]:.4f}"
+cumulative_ret_series = get_cumulative_ret(df_portfolios)
+Q10_ANSWER = f"{cumulative_ret_series['ls']:.4f}"
 
 print(f"Q1_ANSWER: {Q1_ANSWER} is for Q1 part 8")
 print(f"Q2_ANSWER: {Q2_ANSWER} is for Q2 part 8")
