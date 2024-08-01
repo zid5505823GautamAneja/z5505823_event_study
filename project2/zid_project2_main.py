@@ -318,7 +318,7 @@ Q8_ANSWER = f"{df_portfolios.shape[0]},{df_portfolios.shape[1]}"
 #     lowest total volatility for the year 2019?
 #     Use the output dataframe, EW_LS_pf_d, and auxiliary function in this script
 #     to do the calculation.
-Q9_ANSWER = f"{df_portfolios.loc['2019'].mean(axis=0).min():.4f}"
+Q9_ANSWER = f"{df_portfolios.loc['2019'].mean(axis=1).min():.4f}"
 # Q10: What is the cumulative portfolio return of the total volatility long-short portfolio
 #      over the whole sample period?
 #      Use the output dataframe, EW_LS_pf_df, and auxiliary function in this script
