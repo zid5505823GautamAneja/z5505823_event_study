@@ -178,7 +178,18 @@ def get_avg(df: pd.DataFrame, year):
         dtype: float64
 
     """
-    return df[df.index.year == year].mean()
+    # DataFrame index is a DatetimeIndex or PeriodIndex
+    if not isinstance(df.index, (pd.DatetimeIndex, pd.PeriodIndex)):
+        raise ValueError("The DataFrame index must be a DatetimeIndex or PeriodIndex.")
+
+    # Filter the DataFrame for the specified year
+    df_year = df[df.index.year == year]
+
+    # Calculate the average of each column, excluding missing values
+    avg_series = df_year.mean()
+
+    return avg_series
+
 
 def get_cumulative_ret(df):
     """ Returns cumulative returns for input DataFrame.
@@ -207,7 +218,14 @@ def get_cumulative_ret(df):
         where r1, ..., rN represents monthly returns
 
     """
-    return (1 + df).cumprod() - 1
+    # Calculate the cumulative product of returns for each portfolio
+    cumulative_product = (1 + df).cumprod()
+
+    # The final cumulative return for each portfolio
+    cumulative_return = cumulative_product.iloc[-1] - 1
+
+    return cumulative_return
+
 
 # ----------------------------------------------------------------------------
 # Part 8: Answer questions
@@ -323,7 +341,8 @@ Q9_ANSWER = f"{df_portfolios.loc['2019'].mean(axis=1).min():.4f}"
 #      over the whole sample period?
 #      Use the output dataframe, EW_LS_pf_df, and auxiliary function in this script
 #     to do the calculation.
-Q10_ANSWER = f"{get_cumulative_ret(df_portfolios)['ls'].iloc[-1]:.4f}"
+cumulative_ret_series = get_cumulative_ret(df_portfolios)
+Q10_ANSWER = f"{cumulative_ret_series['ls']:.4f}"
 
 print(f"Q1_ANSWER: {Q1_ANSWER} is for Q1 part 8")
 print(f"Q2_ANSWER: {Q2_ANSWER} is for Q2 part 8")
@@ -360,17 +379,16 @@ print(f"Q10_ANSWER: {Q10_ANSWER} is for Q10 part 8")
 def t_stat(df):
     """
     Calculate the t-statistics for the long-short portfolio
-    :param df: dataframe containing 'ls' column
-    :return: dataframe with t-statistics
+    :param df: DataFrame containing 'ls' column
+    :return: DataFrame with t-statistics
     """
     ls_mean = df['ls'].mean()
     ls_standard_deviation = df['ls'].std()
     number_obs = df['ls'].count()
     ls_tstat = ls_mean / (ls_standard_deviation / np.sqrt(number_obs))
-    return pd.DataFrame({'ls_bar': [ls_mean], 'ls_t': [ls_tstat], 'n_obs': [number_obs]})
+    return pd.DataFrame({'ls_bar': [round(ls_mean, 4)], 'ls_t': [round(ls_tstat, 4)], 'n_obs': [number_obs]}, index=['ls'])
 
-
-# df_portfolios is already defined and contains the 'ls' column
+# Assuming df_portfolios is already defined and contains the 'ls' column
 # df_portfolios = pd.DataFrame(data)
 
 # Calculate the t-statistics
@@ -380,20 +398,16 @@ t_stat_result = t_stat(df_portfolios)
 print("T-Statistic Results DataFrame:")
 print(t_stat_result)
 
-# Format the values for individual printing if needed
+# Extracting the values for replacement
 ls_bar = f"{t_stat_result['ls_bar'].iloc[0]:.4f}"
 ls_t = f"{t_stat_result['ls_t'].iloc[0]:.4f}"
-n_obs = f"{t_stat_result['n_obs'].iloc[0]}"
+n_obs = t_stat_result['n_obs'].iloc[0]
 
 # Print the formatted values
-print(f"\nFormatted Outputs:")
+print("\nFormatted Outputs:")
 print(f"ls_bar: {ls_bar}")
 print(f"ls_t: {ls_t}")
 print(f"n_obs: {n_obs}")
-
-ls_bar = '0.0089'
-ls_t = '1.6248'
-n_obs = 235
 
 
 # ----------------------------------------------------------------------------
