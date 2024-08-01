@@ -221,7 +221,7 @@ def get_cumulative_ret(df):
     # Calculate the cumulative product of returns for each portfolio
     cumulative_product = (1 + df).cumprod()
 
-    # The final cumulative return for each portfolio
+    # The final cumulative return for all portfolio
     cumulative_return = cumulative_product.iloc[-1] - 1
 
     return cumulative_return
