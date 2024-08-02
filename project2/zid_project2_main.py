@@ -287,12 +287,15 @@ df_portfolios = pd.read_pickle('EW_LS_pf_df.pkl')
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q1_ANSWER = dict_ret['Daily'].loc['2008'].mean(axis=0).idxmin()
-# Assuming dict_ret['Daily'] is a DataFrame containing daily returns indexed by date
+print(f"Q1: Which stock in your sample has the lowest average daily return for the year 2008?")
+print(f"Q1_ANSWER: {Q1_ANSWER}")
 
 # Q2: What is the daily average return of the stock in question 1 for the year 2008.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q2_ANSWER = f"{dict_ret['Daily'].loc['2008'].mean(axis=0).min():.4f}"
+print(f"Q2: What is the daily average return of the stock in question 1 for the year 2008?")
+print(f"Q2_ANSWER: {Q2_ANSWER}")
 
 # Q3: Which stock in your sample has the highest average monthly return for the
 #     year 2019 (ignoring missing values)? Your answer should include the
@@ -300,23 +303,30 @@ Q2_ANSWER = f"{dict_ret['Daily'].loc['2008'].mean(axis=0).min():.4f}"
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q3_ANSWER = dict_ret['Monthly'].loc['2019'].mean(axis=0).idxmax()
+print(f"Q3: Which stock in your sample has the highest average monthly return for the year 2019?")
+print(f"Q3_ANSWER: {Q3_ANSWER}")
 
 # Q4: What is the average monthly return of the stock in question 3 for the year 2019.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q4_ANSWER = f"{dict_ret['Monthly'].loc['2019'].mean(axis=0).max():.4f}"
+print(f"Q4: What is the average monthly return of the stock in question 3 for the year 2019?")
+print(f"Q4_ANSWER: {Q4_ANSWER}")
 
 # Q5: What is the average monthly total volatility for stock 'TSLA' in the year 2010?
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
 #     to do the calculation.
 Q5_ANSWER = f"{df_cha[f'tsla_vol'].loc['2010'].mean():.4f}"
-#
+print(f"Q5: What is the average monthly total volatility for stock 'TSLA' in the year 2010?")
+print(f"Q5_ANSWER: {Q5_ANSWER}")
+
 # Q6: What is the ratio of the average monthly total volatility for stock 'V'
 #     in the year 2008 to that in the year 2018? Keep 1 decimal places.
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
 #     to do the calculation.
-
 Q6_ANSWER = f"{df_cha['v_vol'].loc['2008'].mean() / df_cha['v_vol'].loc['2018'].mean():.1f}"
+print(f"Q6: What is the ratio of the average monthly total volatility for stock 'V' in the year 2008 to that in the year 2018?")
+print(f"Q6_ANSWER: {Q6_ANSWER}")
 
 # Q7: How many effective year-month for stock 'TSLA' in year 2010. An effective year-month
 #     row means both monthly return in 'tsla' column and total volatility in 'tsla_vol'
@@ -324,36 +334,33 @@ Q6_ANSWER = f"{df_cha['v_vol'].loc['2008'].mean() / df_cha['v_vol'].loc['2018'].
 #     Use the output dataframe, Vol_Ret_mrg_df, to do the calculation.
 #     Answer should be an integer
 Q7_ANSWER = f"{df_cha.loc['2010', ['tsla', 'tsla_vol']].dropna().shape[0]}"
-
+print(f"Q7: How many effective year-months for stock 'TSLA' in year 2010?")
+print(f"Q7_ANSWER: {Q7_ANSWER}")
 
 # Q8: How many rows and columns in the EW_LS_pf_df data frame?
 #     The answer string should only include two integers separating by a comma.
 #     The first number represents number of rows.
 #     Don't include any other signs or letters.
 Q8_ANSWER = f"{df_portfolios.shape[0]},{df_portfolios.shape[1]}"
+print(f"Q8: How many rows and columns in the EW_LS_pf_df data frame?")
+print(f"Q8_ANSWER: {Q8_ANSWER}")
 
 # Q9: What is the average equal weighted portfolio return of the quantile with the
 #     lowest total volatility for the year 2019?
 #     Use the output dataframe, EW_LS_pf_d, and auxiliary function in this script
 #     to do the calculation.
 Q9_ANSWER = f"{df_portfolios.loc['2019'].mean(axis=1).min():.4f}"
+print(f"Q9: What is the average equal weighted portfolio return of the quantile with the lowest total volatility for the year 2019?")
+print(f"Q9_ANSWER: {Q9_ANSWER}")
+
 # Q10: What is the cumulative portfolio return of the total volatility long-short portfolio
 #      over the whole sample period?
 #      Use the output dataframe, EW_LS_pf_df, and auxiliary function in this script
 #     to do the calculation.
 cumulative_ret_series = get_cumulative_ret(df_portfolios)
 Q10_ANSWER = f"{cumulative_ret_series['ls']:.4f}"
-
-print(f"Q1_ANSWER: {Q1_ANSWER} is for Q1 part 8")
-print(f"Q2_ANSWER: {Q2_ANSWER} is for Q2 part 8")
-print(f"Q3_ANSWER: {Q3_ANSWER} is for Q3 part 8")
-print(f"Q4_ANSWER: {Q4_ANSWER} is for Q4 part 8")
-print(f"Q5_ANSWER: {Q5_ANSWER} is for Q5 part 8")
-print(f"Q6_ANSWER: {Q6_ANSWER} is for Q6 part 8")
-print(f"Q7_ANSWER: {Q7_ANSWER} is for Q7 part 8")
-print(f"Q8_ANSWER: {Q8_ANSWER} is for Q8 part 8")
-print(f"Q9_ANSWER: {Q9_ANSWER} is for Q9 part 8")
-print(f"Q10_ANSWER: {Q10_ANSWER} is for Q10 part 8")
+print(f"Q10: What is the cumulative portfolio return of the total volatility long-short portfolio over the whole sample period?")
+print(f"Q10_ANSWER: {Q10_ANSWER}")
 
 # ----------------------------------------------------------------------------
 # Part 9: Add t_stat function
