@@ -418,7 +418,7 @@ print(f"n_obs: {n_obs}")
 
 ls_bar = '0.0090'
 ls_t = '1.6248'
-n_obs = '235'
+n_obs = 235
 
 
 
@@ -511,7 +511,7 @@ fada023	zid5505823GautamAneja	Wed Jul 31 23:57:52 2024 +1000	etl py updated
 # Please replace the """?""" with your team's presentation video link.
 # If you have set a password, please replace the """?""" with the actual password to ensure accessibility,
 # or leave the Presentation_Password variable as it is.
-Presentation_link = """your_video_link_here"""
+Presentation_link = """ https://unsw-my.sharepoint.com/:p:/g/personal/z5529884_ad_unsw_edu_au/EeqL-zkA6DNKrqxlHpvlLiMBopaJRWomtZnnMCWf76rqSA?e=gvXrvz """
 Presentation_Password = """your_password_here"""
 
 
