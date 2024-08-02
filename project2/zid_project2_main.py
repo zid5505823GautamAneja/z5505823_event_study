@@ -418,7 +418,7 @@ print(f"n_obs: {n_obs}")
 
 ls_bar = '0.0090'
 ls_t = '1.6248'
-n_obs = 235
+n_obs = '235'
 
 
 
