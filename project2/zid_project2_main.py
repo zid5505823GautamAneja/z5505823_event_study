@@ -287,14 +287,14 @@ df_portfolios = pd.read_pickle('EW_LS_pf_df.pkl')
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q1_ANSWER = dict_ret['Daily'].loc['2008'].mean(axis=0).idxmin()
-print(f"Q1: Which stock in your sample has the lowest average daily return for the year 2008?")
+Q1_answer = 'nvda'
 print(f"Q1_ANSWER: {Q1_ANSWER}")
 
 # Q2: What is the daily average return of the stock in question 1 for the year 2008.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q2_ANSWER = f"{dict_ret['Daily'].loc['2008'].mean(axis=0).min():.4f}"
-print(f"Q2: What is the daily average return of the stock in question 1 for the year 2008?")
+Q2_answer = '-0.0042'
 print(f"Q2_ANSWER: {Q2_ANSWER}")
 
 # Q3: Which stock in your sample has the highest average monthly return for the
@@ -303,21 +303,21 @@ print(f"Q2_ANSWER: {Q2_ANSWER}")
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q3_ANSWER = dict_ret['Monthly'].loc['2019'].mean(axis=0).idxmax()
-print(f"Q3: Which stock in your sample has the highest average monthly return for the year 2019?")
+Q3_answer = 'aapl'
 print(f"Q3_ANSWER: {Q3_ANSWER}")
 
 # Q4: What is the average monthly return of the stock in question 3 for the year 2019.
 #     Use the output dictionary, DM_Ret_dict, and auxiliary function in this script
 #     to do the calculation.
 Q4_ANSWER = f"{dict_ret['Monthly'].loc['2019'].mean(axis=0).max():.4f}"
-print(f"Q4: What is the average monthly return of the stock in question 3 for the year 2019?")
+Q4_answer = '0.0566'
 print(f"Q4_ANSWER: {Q4_ANSWER}")
 
 # Q5: What is the average monthly total volatility for stock 'TSLA' in the year 2010?
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
 #     to do the calculation.
 Q5_ANSWER = f"{df_cha[f'tsla_vol'].loc['2010'].mean():.4f}"
-print(f"Q5: What is the average monthly total volatility for stock 'TSLA' in the year 2010?")
+Q5_answer = '0.0414'
 print(f"Q5_ANSWER: {Q5_ANSWER}")
 
 # Q6: What is the ratio of the average monthly total volatility for stock 'V'
@@ -325,7 +325,7 @@ print(f"Q5_ANSWER: {Q5_ANSWER}")
 #     Use the output dataframe, Vol_Ret_mrg_df, and auxiliary function in this script
 #     to do the calculation.
 Q6_ANSWER = f"{df_cha['v_vol'].loc['2008'].mean() / df_cha['v_vol'].loc['2018'].mean():.1f}"
-print(f"Q6: What is the ratio of the average monthly total volatility for stock 'V' in the year 2008 to that in the year 2018?")
+Q6_answer = '2.6'
 print(f"Q6_ANSWER: {Q6_ANSWER}")
 
 # Q7: How many effective year-month for stock 'TSLA' in year 2010. An effective year-month
@@ -334,7 +334,7 @@ print(f"Q6_ANSWER: {Q6_ANSWER}")
 #     Use the output dataframe, Vol_Ret_mrg_df, to do the calculation.
 #     Answer should be an integer
 Q7_ANSWER = f"{df_cha.loc['2010', ['tsla', 'tsla_vol']].dropna().shape[0]}"
-print(f"Q7: How many effective year-months for stock 'TSLA' in year 2010?")
+Q7_answer = 5
 print(f"Q7_ANSWER: {Q7_ANSWER}")
 
 # Q8: How many rows and columns in the EW_LS_pf_df data frame?
@@ -342,7 +342,7 @@ print(f"Q7_ANSWER: {Q7_ANSWER}")
 #     The first number represents number of rows.
 #     Don't include any other signs or letters.
 Q8_ANSWER = f"{df_portfolios.shape[0]},{df_portfolios.shape[1]}"
-print(f"Q8: How many rows and columns in the EW_LS_pf_df data frame?")
+Q8_answer = '235, 4'
 print(f"Q8_ANSWER: {Q8_ANSWER}")
 
 # Q9: What is the average equal weighted portfolio return of the quantile with the
@@ -350,7 +350,7 @@ print(f"Q8_ANSWER: {Q8_ANSWER}")
 #     Use the output dataframe, EW_LS_pf_d, and auxiliary function in this script
 #     to do the calculation.
 Q9_ANSWER = f"{df_portfolios.loc['2019'].mean(axis=1).min():.4f}"
-print(f"Q9: What is the average equal weighted portfolio return of the quantile with the lowest total volatility for the year 2019?")
+Q9_answer = '-0.0869'
 print(f"Q9_ANSWER: {Q9_ANSWER}")
 
 # Q10: What is the cumulative portfolio return of the total volatility long-short portfolio
@@ -359,7 +359,7 @@ print(f"Q9_ANSWER: {Q9_ANSWER}")
 #     to do the calculation.
 cumulative_ret_series = get_cumulative_ret(df_portfolios)
 Q10_ANSWER = f"{cumulative_ret_series['ls']:.4f}"
-print(f"Q10: What is the cumulative portfolio return of the total volatility long-short portfolio over the whole sample period?")
+Q10_answer = '2.6129'
 print(f"Q10_ANSWER: {Q10_ANSWER}")
 
 # ----------------------------------------------------------------------------
@@ -416,9 +416,9 @@ print(f"ls_bar: {ls_bar}")
 print(f"ls_t: {ls_t}")
 print(f"n_obs: {n_obs}")
 
-ls_bar = 0.0090
-ls_t = 1.6248
-n_obs = 235
+ls_bar = '0.0090'
+ls_t = '1.6248'
+n_obs = '235'
 
 
 
@@ -446,9 +446,46 @@ n_obs = 235
 #
 # Please replace the """?""" with your team's project 2 git log:
 git_log = """
-dae0fa9 zid1234 Sarah Xiao Mon Feb 12 16:33:22 2024 +1100 commit and push test
-fa26a62 zid1234 Sarah Xiao Mon Feb 12 16:32:02 2024 +1100 commit and push test
-800bf27 zid5678 David Lee Mon Feb 12 16:12:30 2024 +1100 for testing
+2e5dcde	zid5516025HimankJayNathani	Fri Aug 2 15:15:28 2024 +1000	final main
+2121c61	zid5505823GautamAneja	Fri Aug 2 00:22:33 2024 +1000	t stat answers
+4ae0401	zid5505823GautamAneja	Fri Aug 2 00:18:41 2024 +1000	part 8 answers
+d42b98b	zid5505823GautamAneja	Fri Aug 2 00:16:10 2024 +1000	Merge remote-tracking branch 'origin/main'
+f216c46	zid5505823GautamAneja	Fri Aug 2 00:10:46 2024 +1000	part 8 answers
+fbf2fc8	HimaMallina	Fri Aug 2 00:06:20 2024 +1000	t-stat
+5dca3a5	HimaMallina	Thu Aug 1 23:53:38 2024 +1000	corrected Error in line 344
+a2eca59	HimaMallina	Thu Aug 1 23:45:42 2024 +1000	auxiliary functions-7
+e33ca06	HimaMallina	Thu Aug 1 23:44:17 2024 +1000	Merge remote-tracking branch 'origin/main'
+d1c4c9b	HimaMallina	Thu Aug 1 23:43:41 2024 +1000	auxiliary functions
+9e5a220	zid5505823GautamAneja	Thu Aug 1 23:43:36 2024 +1000	part 8 answers
+7f895c0	HimaMallina	Thu Aug 1 23:43:02 2024 +1000	auxiliary functions
+fe876cc	HimaMallina	Thu Aug 1 23:42:50 2024 +1000	Merge remote-tracking branch 'origin/main'
+c07c765	HimaMallina	Thu Aug 1 23:42:31 2024 +1000	auxiliary functions
+646a9a7	zid5516025HimankJayNathani	Thu Aug 1 23:27:33 2024 +1000	final main
+baaeaa5	zid5505823GautamAneja	Thu Aug 1 23:16:21 2024 +1000	part 8 answers
+0bdc118	zid5505823GautamAneja	Thu Aug 1 23:08:27 2024 +1000	Merge remote-tracking branch 'origin/main'
+180ce13	zid5505823GautamAneja	Thu Aug 1 23:08:09 2024 +1000	part 8 answers
+647add5	Kirti Sharma	Thu Aug 1 21:24:25 2024 +1000	Part 8
+d261366	zid5505823GautamAneja	Thu Aug 1 20:57:18 2024 +1000	All codes, with pkl file read
+63a2f66	zid5516025HimankJayNathani	Thu Aug 1 18:21:11 2024 +1000	final main
+fe57883	zid5505823GautamAneja	Thu Aug 1 02:29:11 2024 +1000	 main.py
+53c6756	zid5505823GautamAneja	Thu Aug 1 02:28:12 2024 +1000	Merge remote-tracking branch 'origin/main'
+84b5082	zid5505823GautamAneja	Thu Aug 1 02:27:11 2024 +1000	 main.py
+04a74e5	zid5505823GautamAneja	Thu Aug 1 02:25:47 2024 +1000	main.py updated
+133ca80	z5507593	Thu Aug 1 01:45:41 2024 +1000	Updated main.py part 2,3,7
+3103304	zid5516025HimankJayNathani	Thu Aug 1 01:35:56 2024 +1000	part 7,8,9
+84328d5	z5507593	Thu Aug 1 01:28:28 2024 +1000	Updated main.py part 2,3,7
+480aff2	HimaMallina	Thu Aug 1 01:07:45 2024 +1000	Part-5 again
+eca73bf	HimaMallina	Thu Aug 1 00:55:43 2024 +1000	Part-5 again
+4697153	HimaMallina	Thu Aug 1 00:47:35 2024 +1000	All the parts of cha- Part-5.
+1d4d4ae	HimaMallina	Thu Aug 1 00:46:10 2024 +1000	All the parts of cha- Part-5
+3057b26	HimaMallina	Thu Aug 1 00:46:01 2024 +1000	Merge remote-tracking branch 'origin/main'
+0cbb56f	zid5516025HimankJayNathani	Thu Aug 1 00:42:20 2024 +1000	Merge remote-tracking branch 'origin/main'
+53545f4	HimaMallina	Thu Aug 1 00:41:53 2024 +1000	All the parts of cha- Part-5
+a3190f3	z5507593	Thu Aug 1 00:41:33 2024 +1000	Updated characteristics.py
+41a274e	zid5516025HimankJayNathani	Thu Aug 1 00:40:58 2024 +1000	new etl
+cec0302	HimaMallina	Thu Aug 1 00:30:49 2024 +1000	part 5.1
+fada023	zid5505823GautamAneja	Wed Jul 31 23:57:52 2024 +1000	etl py updated
+80378d2	zid5505823GautamAneja	Wed Jul 31 23:36:20 2024 +1000	Initial commit
 """
 
 # ----------------------------------------------------------------------------
